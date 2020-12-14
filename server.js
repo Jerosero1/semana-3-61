@@ -22,13 +22,15 @@ app.use('/api', apiRouter);
 // .com/api/usuario/listar
 // .com/api/usuario/registrar
 // .com/api/usuario/login
-app.set('PORT', process.env.PORT || 3000);
+const port = process.env.PORT || 3000;
+
 app.get('/', function(req, res) {
     console.log("Estructura base del proyecto backend");
     res.send("Estructura base del proyecto backend");
 });
-app.listen(app.get('PORT'), () => {
-    console.log(`Running on http://localhost:${app.get('PORT')}`)
-})
+
+app.listen(port, () => {
+    console.log(`Running on http://localhost:${port}`)
+});
 
 module.exports = app;

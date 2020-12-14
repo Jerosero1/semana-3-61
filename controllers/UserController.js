@@ -6,23 +6,20 @@ const models = require('../models');
 
 exports.signin = async(req, res, next) =>{
     try {
-        // const user = await models.User.findOne({where: {email: req.body.email}});
         const user = await models.user.findOne({where: {email: req.body.email}});
             if(user){
-                const passwordIsValid = bcrypt.compareSync(req.body.password , user.password);
+                const passwordIsValid = bcrypt.compareSync(req.body.password, user.password);
                     if(passwordIsValid){
                         const token = jwt.sign({
                             id: user.id,
                             name: user.name,
                             email: user.email,
-                            // rol: user.rol
                         }, 'config.secret', {
                             expiresIn: 84600,
                         }
                         );
                         res.status(200).send({
                             auth: true,
-                            // tokenReturn: token
                             accessToken: token
                         })
                 

@@ -1,29 +1,51 @@
+/** Express router providing user related routes
+ * @module routes/api/users
+ * @requires express
+ */
+
 const router = require('express').Router();
 const { User } = require('../../models');
 const userController = require('../../controllers/UserController.js');
 const bcrypt = require('bcryptjs');
-// const { ROWLOCK } = require('sequelize/types/lib/table-hints');
 
-
+/**
+ * Route serving user data.
+ * @name get/user
+ * @function
+ * @memberof module:routes/users~getUser
+ * @inner
+ * @param {string} path - Express path
+ * @param {callback} middleware - find user.
+ */
 router.get('/', async(req,res)=>{
-    // const user = await User.findAll();
     const user = await User.user.findAll();
     res.status(200).json(user);
 })
 
-//api/user/register
+/**
+ * Route for register new user.
+ * @name post/register
+ * @function
+ * @memberof module:routes/users~registerUser
+ * @inner
+ * @param {string} path - Express path
+ * @param {callback} middleware - Create user.
+ */
 router.post('/register', async(req,res)=>{
     req.body.password = bcrypt.hashSync(req.body.password, 10);
-    // const user = await User.create(req.body);
     const user = await User.user.create(req.body);
     res.status(200).json(user);
 });
 
-// router.get('/', userController.listar);
-// router.post('/register', userController.register);
+/**
+ * Route serving login.
+ * @name post/register
+ * @function
+ * @memberof module:routes/users~registerUser
+ * @inner
+ * @param {string} path - Express path
+ * @param {callback} middleware - Authenticate user.
+ */
 router.post('/signin', userController.signin);
-
-// router.post('/login', userCOntroller.login);
-// router.post('/register', userController.register)
 
 module.exports = router
