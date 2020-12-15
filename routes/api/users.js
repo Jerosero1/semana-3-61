@@ -5,7 +5,7 @@
 
 const router = require('express').Router();
 const { User } = require('../../models');
-const userController = require('../../controllers/UserController.js');
+const userController = require('../../controllers/UserController');
 const bcrypt = require('bcryptjs');
 
 /**

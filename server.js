@@ -2,6 +2,7 @@ const express = require('express');
 const morgan = require('morgan');
 const apiRouter = require('./routes/index');
 const bodyPArser = require('body-parser');
+const models = require('./models');
 const cors = require('cors');
 //instancia de express en mi app
 const app = express();
@@ -25,12 +26,11 @@ app.use('/api', apiRouter);
 const port = process.env.PORT || 3000;
 
 app.get('/', function(req, res) {
-    console.log("Estructura base del proyecto backend");
     res.send("Estructura base del proyecto backend");
 });
 
 app.listen(port, () => {
-    console.log(`Running on http://localhost:${port}`)
+    console.log(`Running on http://localhost:${port}`);
 });
 
 module.exports = app;
