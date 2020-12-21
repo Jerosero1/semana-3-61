@@ -1,39 +1,33 @@
 const bcrypt = require('bcryptjs');
-const jwt = require('jsonwebtoken');
 const models = require('../models');
+const token = require('../services/token');
 
-const signin = async(req, res) => {
+const signin = async(req, res, next) => {
   try {
-    const user = await models.user.findOne({where: {email: req.body.email}});
-      if (user) {
-        if (bcrypt.compareSync(req.body.password, user.password)) {
-          const token = jwt.sign({id: user.id, name: user.name, email: user.email}, 'key-super-secret', {expiresIn: 84600});
-          res.status(200).send({
-            auth: true,
-            accessToken: token
-          })
-        } else {
-          res.status(401).send({
-            auth: false,
-            accessToken: null,
-            reason: "Invalid Password!"
-          });          
-        }
+    let user = await models.user.findOne({ where: { email: req.body.email } });
+    if (user) {
+      if (await bcrypt.compare(req.body.password, user.password)) {
+        const accessToken = await token.encode(user.id, user.rol);
+        res.status(200).json({ user: {name: user.name, email: user.email}, accessToken });
       } else {
-        res.status(404).send('User Not Found.');
-      }        
-  } catch (error) {
-    res.status(500).send({ error });
+        res.status(401).send({ auth: false, accessToken:null , reason: 'Password Incorrecto' });
+      }
+    } else {
+        res.status(404).send({ message: 'No existe el usuario' });
+    }
+  } catch (e) {
+    res.status(500).send({ message: 'Ocurrió un error' });
+    next(e);
   }
 };
 
 const register = async(req, res, next) =>{
   try {
     req.body.password = bcrypt.hashSync(req.body.password, 10);
-    const user = await User.user.create(req.body);
-    res.status(200).json(user);
-  } catch (error) {
-
+    const user = await models.user.create(req.body);
+    res.status(200).json({name: user.name, email: user.email});
+  } catch (err) {
+    next(err);
   }
 };
 
@@ -41,10 +35,10 @@ const getUser = async(req, res, next) =>{
   try {
     const user = await models.user.findOne({where: {email: req.body.email}});
     if (user) {
-      console.log(user);
+      res.send({name: user.name, email: user.email});
     }
-  } catch (error) {
-
+  } catch (err) {
+    next(err);
   }
 };
 

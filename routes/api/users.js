@@ -6,6 +6,7 @@
 const router = require('express').Router();
 const models = require('../../models');
 const UserController = require('../../controllers/UserController');
+const auth = require('../../middlewares/auth');
 const bcrypt = require('bcryptjs');
 
 /**
@@ -17,7 +18,7 @@ const bcrypt = require('bcryptjs');
  * @param {string} path - Express path
  * @param {callback} middleware - find user.
  */
-router.get('/myUser', UserController.getUser)
+router.post('/user', UserController.getUser)
 
 /**
  * Route for register new user.

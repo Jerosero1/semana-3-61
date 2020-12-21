@@ -4,7 +4,6 @@ const apiRouter = require('./routes/index');
 const bodyPArser = require('body-parser');
 const models = require('./models');
 const cors = require('cors');
-const sequelize = require('sequelize');
 //instancia de express en mi app
 const app = express();
 app.use(cors());
@@ -27,9 +26,9 @@ app.use('/api', apiRouter);
 const port = process.env.PORT || 3000;
 
 app.get('/', function(req, res) {
-  console.log(User);
   res.status(200).json({'message' : 'Estructura base del proyecto backend'});
 });
+
 models.sequelize.sync()
   .then(() => {
     app.listen(port, async() => {console.log(`Running on http://localhost:${port}`);});
