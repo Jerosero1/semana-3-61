@@ -4,8 +4,8 @@
  */
 
 const router = require('express').Router();
-const { User } = require('../../models');
-const userController = require('../../controllers/UserController.js');
+const models = require('../../models');
+const UserController = require('../../controllers/UserController');
 const bcrypt = require('bcryptjs');
 
 /**
@@ -17,10 +17,7 @@ const bcrypt = require('bcryptjs');
  * @param {string} path - Express path
  * @param {callback} middleware - find user.
  */
-router.get('/', async(req,res)=>{
-    const user = await User.user.findAll();
-    res.status(200).json(user);
-})
+router.get('/myUser', UserController.getUser)
 
 /**
  * Route for register new user.
@@ -31,11 +28,7 @@ router.get('/', async(req,res)=>{
  * @param {string} path - Express path
  * @param {callback} middleware - Create user.
  */
-router.post('/register', async(req,res)=>{
-    req.body.password = bcrypt.hashSync(req.body.password, 10);
-    const user = await User.user.create(req.body);
-    res.status(200).json(user);
-});
+router.post('/register', UserController.register);
 
 /**
  * Route serving login.
@@ -46,6 +39,6 @@ router.post('/register', async(req,res)=>{
  * @param {string} path - Express path
  * @param {callback} middleware - Authenticate user.
  */
-router.post('/signin', userController.signin);
+router.post('/signin', UserController.signin);
 
 module.exports = router
