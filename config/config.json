@@ -1,19 +1,19 @@
 {
-    "development": {
-        "dialect": "mysql",
-        "database": "world",
-        "username": "root",
-        "host": "localhost",
-        "port": "3306",
-        "password": "1pedroNavaja",
-        "logging": true
-    },
-    "test": {
-        "dialect": "sqlite",
-        "storage": "./database.sqlite3"
-    },
-    "production": {
-        "dialect": "sqlite",
-        "storage": "./database.sqlite3"
-    }
+  "development": {
+    "dialect": "mysql",
+    "database": "world",
+    "username": "root",
+    "host": "localhost",
+    "port": "3306",
+    "password": "1pedroNavaja",
+    "logging": true
+  },
+  "test": {
+    "dialect": "sqlite",
+    "storage": "./database.sqlite3"
+  },
+  "production": {
+    "dialect": "sqlite",
+    "storage": "./database.sqlite3"
+  }
 }
