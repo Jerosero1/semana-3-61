@@ -4,10 +4,7 @@
  */
 
 const router = require('express').Router();
-const models = require('../../models');
 const UserController = require('../../controllers/UserController');
-const auth = require('../../middlewares/auth');
-const bcrypt = require('bcryptjs');
 
 /**
  * Route serving user data.
@@ -18,7 +15,7 @@ const bcrypt = require('bcryptjs');
  * @param {string} path - Express path
  * @param {callback} middleware - find user.
  */
-router.post('/user', UserController.getUser)
+router.post('/user', UserController.getUser);
 
 /**
  * Route for register new user.
@@ -42,4 +39,4 @@ router.post('/register', UserController.register);
  */
 router.post('/signin', UserController.signin);
 
-module.exports = router
+module.exports = router;

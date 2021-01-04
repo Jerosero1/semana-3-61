@@ -1,10 +1,10 @@
-var jwt = require('jsonwebtoken');
+const jwt = require('jsonwebtoken');
 const models = require('../models');
 
-async function checkToken(token) {
+async function checkToken(accessToken) {
   let __id = null;
   try {
-    const { id } = await jwt.decode(token);
+    const { id } = await jwt.decode(accessToken);
     __id = id;
   } catch (e) {
     return false;
@@ -13,33 +13,30 @@ async function checkToken(token) {
   if (user) {
     const token = jwt.sign({ id: __id }, 'secretKeyToGenerateToken', { expiresIn: '1d' });
     return { token, rol: user.rol };
-  } else {
-    return false;
   }
-};
+  return false;
+}
 
-//generar el token
-const encode = async(_id, rol = 'Administrador') => {
+// generar el token
+const encode = async (_id, rol = 'Administrador') => {
   try {
-    const token = jwt.sign({ id: _id, rol: rol }, 'secretKeyToGenerateToken', { expiresIn: '1d' });
+    const token = jwt.sign({ id: _id, rol }, 'secretKeyToGenerateToken', { expiresIn: '1d' });
     return token;
   } catch (e) {
     console.error(e);
     return false;
   }
-  
 };
 
-//permite decodificar el token
-const decode = async(token) => {
+// permite decodificar el token
+const decode = async (token) => {
   try {
     const { id } = await jwt.verify(token, 'secretKeyToGenerateToken');
-    const user = await models.user.findOne({ where: { id: id } });
+    const user = await models.user.findOne({ where: { id } });
     if (user) {
       return user;
-    } else {
-      return false;
     }
+    return false;
   } catch (e) {
     const newToken = await checkToken(token);
     return newToken;
@@ -49,4 +46,4 @@ const decode = async(token) => {
 module.exports = {
   encode,
   decode,
-}
+};
